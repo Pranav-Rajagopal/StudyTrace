@@ -10,18 +10,14 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-
       - name: Install dependencies
         run: pip install pyinstaller pygame
-
       - name: Build Windows EXE
-        run: pyinstaller --onefile --windowed --name "EmberveilChronicles" emberveil_v4.py
-
+        run: pyinstaller --onefile --windowed --name "EmberveilChronicles" emberveil.py
       - name: Upload EXE
         uses: actions/upload-artifact@v4
         with:
@@ -32,20 +28,18 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-
       - name: Install dependencies
         run: pip install pyinstaller pygame
-
       - name: Build Mac APP
-        run: pyinstaller --onefile --windowed --name "EmberveilChronicles" emberveil_v4.py
-
+        run: pyinstaller --onefile --windowed --name "EmberveilChronicles" emberveil.py
+      - name: Zip Mac binary
+        run: zip -r Emberveil-Mac.zip dist/
       - name: Upload APP
         uses: actions/upload-artifact@v4
         with:
           name: Emberveil-Mac
-          path: dist/EmberveilChronicles
+          path: Emberveil-Mac.zip
