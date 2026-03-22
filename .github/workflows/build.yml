@@ -1,11 +1,12 @@
-name: Build Windows EXE
+name: Build EXE and APP
 
 on:
   push:
   workflow_dispatch:
 
 jobs:
-  build:
+
+  build-windows:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
@@ -15,14 +16,36 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install PyInstaller
-        run: pip install pyinstaller
+      - name: Install dependencies
+        run: pip install pyinstaller pygame
 
-      - name: Build EXE
-        run: pyinstaller --onefile --windowed --name "StudyTrace" STUDY.py
+      - name: Build Windows EXE
+        run: pyinstaller --onefile --windowed --name "EmberveilChronicles" emberveil_v4.py
 
       - name: Upload EXE
         uses: actions/upload-artifact@v4
         with:
-          name: StudyTrace-Windows
-          path: dist/StudyTrace.exe
+          name: Emberveil-Windows
+          path: dist/EmberveilChronicles.exe
+
+  build-mac:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install pyinstaller pygame
+
+      - name: Build Mac APP
+        run: pyinstaller --onefile --windowed --name "EmberveilChronicles" emberveil_v4.py
+
+      - name: Upload APP
+        uses: actions/upload-artifact@v4
+        with:
+          name: Emberveil-Mac
+          path: dist/EmberveilChronicles
